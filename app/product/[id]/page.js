@@ -1,37 +1,33 @@
-// pages/products/[id].js
-
+// app/product/[id]/page.js
 import Image from "next/image";
 import axios from "axios";
+import { notFound } from "next/navigation";
+import { Typography, Button, Paper, Box } from "@mui/material";
 import { useCart } from "@/app/context/cart-context";
-import {
-    Typography,
-    Button,
-    Paper,
-    Box,
-} from "@mui/material";
 
-export async function getStaticPaths() {
+// Use a client component for interactive parts
+import AddToCartButton from "@/app/components/addtocart";
+
+export async function generateStaticParams() {
     const res = await axios.get("https://cart-api.alexrodriguez.workers.dev/products");
     const products = res.data;
 
-    const paths = products.map(product => ({
-        params: { id: product.id.toString() },
+    return products.map((product) => ({
+        id: product.id.toString(),
     }));
-
-    return { paths, fallback: false }; // fallback: false = 404 for unknown IDs
 }
 
-export async function getStaticProps({ params }) {
-    const res = await axios.get(`https://cart-api.alexrodriguez.workers.dev/products/${params.id}`);
-    return {
-        props: {
-            product: res.data,
-        },
-    };
-}
+export default async function ProductDetail({ params }) {
+    const { id } = params;
 
-export default function ProductDetail({ product }) {
-    const { addToCart } = useCart();
+    let product;
+    try {
+        const res = await axios.get(`https://cart-api.alexrodriguez.workers.dev/products/${id}`);
+        product = res.data;
+    } catch (err) {
+        console.error(err);
+        notFound(); // show 404 if not found
+    }
 
     return (
         <div className="pt-24 px-4 flex justify-center">
@@ -53,9 +49,7 @@ export default function ProductDetail({ product }) {
                             ${product.price.toFixed(2)}
                         </Typography>
                         <div className="pt-12">
-                            <Button color="primary" variant="contained" onClick={() => addToCart(product)}>
-                                Add to Cart
-                            </Button>
+                            <AddToCartButton product={product} />
                         </div>
                     </div>
                 </div>
