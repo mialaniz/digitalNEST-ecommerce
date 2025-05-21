@@ -1,6 +1,5 @@
-"use client"
+// pages/products/[id].js
 
-import {use, useState, useEffect } from "react";
 import Image from "next/image";
 import axios from "axios";
 import { useCart } from "@/app/context/cart-context";
@@ -9,52 +8,34 @@ import {
     Button,
     Paper,
     Box,
-    CircularProgress,
 } from "@mui/material";
 
-export async function generateStaticParams() {
-    const res = await fetch("https://cart-api.alexrodriguez.workers.dev/products");
-    const products = await res.json();
+export async function getStaticPaths() {
+    const res = await axios.get("https://cart-api.alexrodriguez.workers.dev/products");
+    const products = res.data;
 
-    return products.map((product) => ({
-        id: product.id.toString(), // dynamic segment values must be strings
+    const paths = products.map(product => ({
+        params: { id: product.id.toString() },
     }));
+
+    return { paths, fallback: false }; // fallback: false = 404 for unknown IDs
 }
 
+export async function getStaticProps({ params }) {
+    const res = await axios.get(`https://cart-api.alexrodriguez.workers.dev/products/${params.id}`);
+    return {
+        props: {
+            product: res.data,
+        },
+    };
+}
 
-export default function ProductDetail({params}) {
-
-    const { id } = use(params);
-    const {addToCart} = useCart();
-
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (!id) return;
-
-        axios.get(`https://cart-api.alexrodriguez.workers.dev/products/${id}`)
-            .then((response) => {
-                setProduct(response.data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching product:", error);
-                setLoading(false);
-            });
-    }, [id]);
-
-    if (loading) {
-        return (
-            <Box className="flex justify-center items-center h-screen">
-                <CircularProgress />
-            </Box>
-        );
-    }
+export default function ProductDetail({ product }) {
+    const { addToCart } = useCart();
 
     return (
         <div className="pt-24 px-4 flex justify-center">
-            <Paper elevation={2} className="p-4 w-full max-w-6/12 h-72"> {/* Set max width here */}
+            <Paper elevation={2} className="p-4 w-full max-w-6/12 h-72">
                 <div className="flex flex-col md:flex-row gap-4">
                     <Image
                         src={product.image}
