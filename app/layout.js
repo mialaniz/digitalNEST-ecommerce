@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import {Roboto} from "@next/font/google";
+import { Roboto } from "next/font/google";
 import Navbar from "@/app/components/navbar";
 import {CartProvider} from "@/app/context/cart-context";
 

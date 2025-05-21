@@ -12,7 +12,14 @@ import {
     CircularProgress,
 } from "@mui/material";
 
+export async function generateStaticParams() {
+    const res = await fetch("https://cart-api.alexrodriguez.workers.dev/products");
+    const products = await res.json();
 
+    return products.map((product) => ({
+        id: product.id.toString(), // dynamic segment values must be strings
+    }));
+}
 
 
 export default function ProductDetail({params}) {
