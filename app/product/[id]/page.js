@@ -3,11 +3,10 @@ import Image from "next/image";
 import axios from "axios";
 import { notFound } from "next/navigation";
 import { Typography, Button, Paper, Box } from "@mui/material";
-import { useCart } from "@/app/context/cart-context";
-
-// Use a client component for interactive parts
 import AddToCartButton from "@/app/components/addtocart";
 
+
+//Added this in order to deploy onto successfully GitHub pages.
 export async function generateStaticParams() {
     const res = await axios.get("https://cart-api.alexrodriguez.workers.dev/products");
     const products = res.data;
@@ -26,7 +25,7 @@ export default async function ProductDetail({ params }) {
         product = res.data;
     } catch (err) {
         console.error(err);
-        notFound(); // show 404 if not found
+        notFound();
     }
 
     return (
