@@ -29,8 +29,8 @@ export default function Home() {
 
   return (
     <div className="pt-24 pl-16">
-        <div className="flex pr-16">
-            <Typography variant="h5" className="text-black md:pr-[70rem]">
+        <div className="flex md:pr-16">
+            <Typography variant="h5" className="text-black lg:pr-[50rem] md:pr-[70rem]">
                 Our Products
             </Typography>
 

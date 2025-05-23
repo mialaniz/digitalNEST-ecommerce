@@ -17,11 +17,11 @@ export default function Navbar() {
 
     return (
         <div>
-            <AppBar position="static" className="h-14">
+            <AppBar position="static" className="h-16">
                 <Toolbar className="flex justify-between items-center px-4">
 
                     <Link href="/" passHref>
-                        <Typography variant="h6" className="text-white no-underline">
+                        <Typography variant="h5" className="text-white no-underline">
                             DigitalNest Store
                         </Typography>
                     </Link>

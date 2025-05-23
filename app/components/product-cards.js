@@ -19,7 +19,7 @@ export default function ProductCards({products}) {
                         <Link
                             href={`/product/${product.id}`}
                         >
-                            <Paper className="rounded-lg hover:shadow-lg">
+                            <Paper className="rounded-lg hover:shadow-lg md:h-[17.5rem]">
                                 <div className="flex justify-center items-center pt-1">
                                     <Image
                                         src={product.image}
