@@ -13,7 +13,7 @@ import Cart from './cart';
 import {useCart} from "@/app/context/cart-context";
 
 export default function Navbar() {
-    const { cartItems, isCartOpen, toggleCart, cartCount } = useCart();
+    const { isCartOpen, toggleCart } = useCart();
 
     return (
         <div>

@@ -6,7 +6,7 @@ import { Typography, Button, Paper, Box } from "@mui/material";
 import AddToCartButton from "@/app/components/addtocart";
 
 
-//Added this in order to deploy onto successfully GitHub pages.
+//Added this in order to deploy successfully onto GitHub pages.
 export async function generateStaticParams() {
     const res = await axios.get("https://cart-api.alexrodriguez.workers.dev/products");
     const products = res.data;
